@@ -5,7 +5,8 @@ using UnityEngine;
 public enum DrawMode
 {
     NosieMap,
-    ColorMap
+    ColorMap,
+    Mesh
 }
 
 public class MapGenerator : MonoBehaviour    
@@ -20,7 +21,7 @@ public class MapGenerator : MonoBehaviour
     public float persistance;
     public bool autoUpdate;
     public TerrainType[] regions;
-
+    public Renderer mesh;
     public void GenerateMap()
     {
         float[,] noiseMap = MakeNoiseValue.CreateNoiseMap(width, height, seed, scale, octave, lacunarity, persistance);
@@ -48,6 +49,11 @@ public class MapGenerator : MonoBehaviour
         {
             mapDisplay.DrawNoiseMap(TextureGenerator.GenerateColorTexture(colorMap, width, height));
         }
+        else if(drawMode == DrawMode.Mesh)
+        {
+            mapDisplay.DrawMesh(MeshGenerator.GenerateTerrianMesh(noiseMap)
+                , TextureGenerator.GenerateColorTexture(colorMap, width, height));
+        }    
     }
     
     void OnValidate()
